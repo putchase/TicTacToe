@@ -6,6 +6,13 @@ public class Tabuleiro {
 
 	public Tabuleiro() {
 		setTabuleiro(new char[3][3]);
+
+		int i, j;
+		for (i = 0; i <= 2; i++) {
+			for (j = 0; j <= 2; j++) {
+				tabuleiro[i][j] = ' ';
+			}
+		}
 	}
 
 	public char[][] getTabuleiro() {
@@ -24,33 +31,54 @@ public class Tabuleiro {
 		tabuleiro[linha][coluna] = simbolo;
 	}
 
-	 boolean checarVitoria() {
+	public boolean checarVitoria() {
 		int i;
 		// linhas
 		for (i = 0; i <= 2; i++) {
-			if (tabuleiro[i][0] == tabuleiro[i][1] && tabuleiro[i][1] == tabuleiro[i][2]) {
+			if (tabuleiro[i][0] == tabuleiro[i][1] && tabuleiro[i][1] == tabuleiro[i][2] && tabuleiro[i][0] != ' ') {
+				//System.out.println("venceu por linha" + i);
 				existeVencedor = true;
 				return true;
 			}
 		}
-		
+
 		// colunas
 		for (i = 0; i <= 2; i++) {
-			if (tabuleiro[0][i] == tabuleiro[1][i] && tabuleiro[1][i] == tabuleiro[2][i]) {
+			if (tabuleiro[0][i] == tabuleiro[1][i] && tabuleiro[1][i] == tabuleiro[2][i] && tabuleiro[i][0] != ' ') {
+				//System.out.println("venceu por coluna");
 				existeVencedor = true;
 				return true;
 			}
 		}
-		
+
 		// diagonais
-		if (tabuleiro[0][0] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][2]) {
-			existeVencedor = true;
-			return true;
-		} else if (tabuleiro[0][2] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][0]) {
+		if (tabuleiro[0][0] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][2] && tabuleiro[1][1] != ' ') {
+			//System.out.println("venceu por diagonal1");
 			existeVencedor = true;
 			return true;
 		}
-		return false;
+		if (tabuleiro[0][2] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][0] && tabuleiro[1][1] != ' ') {
+			//System.out.println("venceu por diagonal2");
+			existeVencedor = true;
+			return true;
+		}
+		return existeVencedor;
 
+	}
+
+	public void showTabuleiro() {
+		int i;
+		for (i = 0; i <= 2; i++) {
+			System.out.println("[" + tabuleiro[i][0] + "]" + "[" + tabuleiro[i][1] + "]" + "[" + tabuleiro[i][2] + "]");
+		}
+	}
+	
+	public void emptyTabuleiro(){
+		int i, j;
+		for (i = 0; i <= 2; i++) {
+			for (j = 0; j <= 2; j++) {
+				tabuleiro[i][j] = ' ';
+			}
+		}
 	}
 }
