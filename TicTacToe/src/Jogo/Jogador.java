@@ -9,7 +9,7 @@ public class Jogador {
 	public Jogador(){
 		
 	}
-
+	// faz a jogada e checa se o jogador foi vencedor
 	public  boolean fazerJogada(char simbolo, int linha, int coluna){
 		tabuleiro.jogada(simbolo, linha, coluna);
 		
