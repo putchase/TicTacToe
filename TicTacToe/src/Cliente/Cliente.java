@@ -31,6 +31,7 @@ public class Cliente extends JFrame {
 	JPanel painel = new JPanel();
 	JPanel pGeral = new JPanel();
 	JPanel pLinhas[];
+	
 
 	public Cliente() {
 
