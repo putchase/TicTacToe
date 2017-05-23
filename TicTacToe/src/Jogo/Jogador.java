@@ -3,10 +3,13 @@ package Jogo;
 public class Jogador {	
 	
 	public Tabuleiro tabuleiro;
-	private char simbolo;
+	
+	protected char simbolo;
+	private int vitorias = 0;
+	
 	protected boolean vencedor = false;
 	protected boolean vez;
-	private boolean isFirst;
+	protected boolean isFirst;
 	
 	public Jogador(boolean isFirst){
 		this.tabuleiro = new Tabuleiro();
@@ -35,6 +38,7 @@ public class Jogador {
 		
 		if(tabuleiro.checarVitoria() == true){
 			vencedor = true;
+			setVitorias(getVitorias() + 1);
 			return true;
 		}
 		return false;
@@ -51,6 +55,12 @@ public class Jogador {
 	}
 	public void setSimbolo(char simbolo) {
 		this.simbolo = simbolo;
+	}
+	public int getVitorias() {
+		return vitorias;
+	}
+	public void setVitorias(int vitorias) {
+		this.vitorias = vitorias;
 	}
 
 

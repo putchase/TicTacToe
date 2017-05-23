@@ -48,7 +48,9 @@ public class Cliente extends JFrame {
 			e.printStackTrace();
 		}
 	}
-
+	/*
+	 * Paineis GUI
+	 */
 	private void iniciarJogador() {
 		jogador = new Jogador(isFirst);
 
@@ -67,7 +69,7 @@ public class Cliente extends JFrame {
 
 		JLabel geral = new JLabel();
 		geral.setFont(new Font(null, 1, 26));
-		geral.setText("<html>" + noJogador + "<br/>" + simbolo + "<br/></html>");
+		geral.setText("<html>" + noJogador + "<br/>" + simbolo + "<br/> Vit�rias: " + jogador.getVitorias() + "<br/></html>");
 		pGeral = new JPanel();
 		pGeral.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
 		pGeral.add(geral);
@@ -77,7 +79,9 @@ public class Cliente extends JFrame {
 		criarBotoes();
 		mostrarBotoes();
 	}
-
+	
+	
+	
 	private void criarBotoes() {
 		tabuleiro = new JButton[3][3];
 		pLinhas = new JPanel[3];
@@ -92,6 +96,25 @@ public class Cliente extends JFrame {
 		}
 
 	}
+	
+	private void limparTabuleiroGUI() {
+			
+		for (int i = 0; i <= 2; i++) {
+			for (int j = 0; j <= 2; j++) {
+				tabuleiro[i][j].setText("  ");
+				
+			}
+		}
+	}
+	
+	public void vitoria() {
+		if (jogador.isVencedor() == true) {
+			JOptionPane.showMessageDialog(null, "Você Venceu!");
+			limparTabuleiroGUI();
+		}
+	}
+	
+	
 
 	private void mostrarBotoes() {
 		tabuleiro[0][0].addActionListener(new ActionListener() {
@@ -102,14 +125,14 @@ public class Cliente extends JFrame {
 				try {
 					saida.writeBytes("$0:0\n");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				tabuleiro[0][0].setText("" + jogador.getSimbolo());
-				if (jogador.isVencedor() == true) {
-					JOptionPane.showMessageDialog(null, "Você Venceu!");
-				}
+				vitoria();
+				
 			}
+
+			
 		});
 
 		tabuleiro[0][1].addActionListener(new ActionListener() {
@@ -120,13 +143,10 @@ public class Cliente extends JFrame {
 				try {
 					saida.writeBytes("$0:1\n");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				tabuleiro[0][1].setText("" + jogador.getSimbolo());
-				if (jogador.isVencedor() == true) {
-					JOptionPane.showMessageDialog(null, "Você Venceu!");
-				}
+				vitoria();
 			}
 		});
 
@@ -138,13 +158,10 @@ public class Cliente extends JFrame {
 				try {
 					saida.writeBytes("$0:2\n");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				tabuleiro[0][2].setText("" + jogador.getSimbolo());
-				if (jogador.isVencedor() == true) {
-					JOptionPane.showMessageDialog(null, "Você Venceu!");
-				}
+				vitoria();
 			}
 		});
 
@@ -156,13 +173,10 @@ public class Cliente extends JFrame {
 				try {
 					saida.writeBytes("$1:0\n");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				tabuleiro[1][0].setText("" + jogador.getSimbolo());
-				if (jogador.isVencedor() == true) {
-					JOptionPane.showMessageDialog(null, "Você Venceu!");
-				}
+				vitoria();
 			}
 		});
 
@@ -174,13 +188,10 @@ public class Cliente extends JFrame {
 				try {
 					saida.writeBytes("$1:1\n");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				tabuleiro[1][1].setText("" + jogador.getSimbolo());
-				if (jogador.isVencedor() == true) {
-					JOptionPane.showMessageDialog(null, "Você Venceu!");
-				}
+				vitoria();
 			}
 		});
 
@@ -192,13 +203,10 @@ public class Cliente extends JFrame {
 				try {
 					saida.writeBytes("$1:2\n");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				tabuleiro[1][2].setText("" + jogador.getSimbolo());
-				if (jogador.isVencedor() == true) {
-					JOptionPane.showMessageDialog(null, "Você Venceu!");
-				}
+				vitoria();
 			}
 		});
 
@@ -210,13 +218,10 @@ public class Cliente extends JFrame {
 				try {
 					saida.writeBytes("$2:0\n");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				tabuleiro[2][0].setText("" + jogador.getSimbolo());
-				if(jogador.isVencedor() == true){
-					JOptionPane.showMessageDialog(null, "Você Venceu!");
-				}
+				vitoria();
 			}
 		});
 
@@ -228,13 +233,10 @@ public class Cliente extends JFrame {
 				try {
 					saida.writeBytes("$2:1\n");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				tabuleiro[2][1].setText("" + jogador.getSimbolo());
-				if(jogador.isVencedor() == true){
-					JOptionPane.showMessageDialog(null, "Você Venceu!");
-				}
+				vitoria();
 			}
 		});
 
@@ -246,13 +248,10 @@ public class Cliente extends JFrame {
 				try {
 					saida.writeBytes("$2:2\n");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				tabuleiro[2][2].setText("" + jogador.getSimbolo());
-				if(jogador.isVencedor() == true){
-					JOptionPane.showMessageDialog(null, "Você Venceu!");
-				}
+				vitoria();
 			}
 		});
 	}

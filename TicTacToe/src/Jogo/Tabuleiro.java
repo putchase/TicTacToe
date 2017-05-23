@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 
 public class Tabuleiro {
 	protected char[][] tabuleiro;
-	protected boolean existeVencedor = false;
+	//protected boolean existeVencedor = false;
 	//Socket cliente; 
 	//DataOutputStream out;
 	public Tabuleiro() {
@@ -20,12 +20,7 @@ public class Tabuleiro {
 //		}
 		setTabuleiro(new char[3][3]);
 
-		int i, j;
-		for (i = 0; i <= 2; i++) {
-			for (j = 0; j <= 2; j++) {
-				tabuleiro[i][j] = ' ';
-			}
-		}
+		limparTabuleiro();
 	}
 
 	public char[][] getTabuleiro() {
@@ -34,10 +29,6 @@ public class Tabuleiro {
 
 	public void setTabuleiro(char[][] tabuleiro) {
 		this.tabuleiro = tabuleiro;
-	}
-
-	public boolean isExisteVencedor() {
-		return existeVencedor;
 	}
 
 	public void jogada(char simbolo, int linha, int coluna) {
@@ -50,7 +41,7 @@ public class Tabuleiro {
 		for (i = 0; i <= 2; i++) {
 			if (tabuleiro[i][0] == tabuleiro[i][1] && tabuleiro[i][1] == tabuleiro[i][2] && tabuleiro[i][0] != ' ') {
 				//System.out.println("venceu por linha" + i);
-				existeVencedor = true;
+				limparTabuleiro();
 				return true;
 			}
 		}
@@ -59,7 +50,7 @@ public class Tabuleiro {
 		for (i = 0; i <= 2; i++) {
 			if (tabuleiro[0][i] == tabuleiro[1][i] && tabuleiro[1][i] == tabuleiro[2][i] && tabuleiro[i][0] != ' ') {
 				//System.out.println("venceu por coluna");
-				existeVencedor = true;
+				limparTabuleiro();
 				return true;
 			}
 		}
@@ -67,15 +58,15 @@ public class Tabuleiro {
 		// diagonais
 		if (tabuleiro[0][0] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][2] && tabuleiro[1][1] != ' ') {
 			//System.out.println("venceu por diagonal1");
-			existeVencedor = true;
+			limparTabuleiro();
 			return true;
 		}
 		if (tabuleiro[0][2] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][0] && tabuleiro[1][1] != ' ') {
 			//System.out.println("venceu por diagonal2");
-			existeVencedor = true;
+			limparTabuleiro();
 			return true;
 		}
-		return existeVencedor;
+		return false;
 
 	}
 
@@ -86,10 +77,9 @@ public class Tabuleiro {
 		}
 	}
 	
-	public void emptyTabuleiro(){
-		int i, j;
-		for (i = 0; i <= 2; i++) {
-			for (j = 0; j <= 2; j++) {
+	public void limparTabuleiro(){
+		for (int i = 0; i <= 2; i++) {
+			for (int j = 0; j <= 2; j++) {
 				tabuleiro[i][j] = ' ';
 			}
 		}

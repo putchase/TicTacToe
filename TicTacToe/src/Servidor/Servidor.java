@@ -16,7 +16,9 @@ public class Servidor{
 		try{
 
 			ss = new ServerSocket(5051);
-
+			
+			
+			
 			Socket s1 = ss.accept();
 			Socket s2 = ss.accept();
 			clientes.put(s1, s2);
@@ -39,6 +41,7 @@ public class Servidor{
 	private class Listen implements Runnable {
 		private Socket cliente;
 		private HashMap<Socket, Socket> skts;
+		
 		public Listen(Socket skt,HashMap<Socket, Socket> skts) {
 			cliente = skt;
 			this.skts = skts;
