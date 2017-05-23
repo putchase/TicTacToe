@@ -1,10 +1,23 @@
 package Jogo;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 public class Tabuleiro {
 	protected char[][] tabuleiro;
 	protected boolean existeVencedor = false;
-
+	//Socket cliente; 
+	//DataOutputStream out;
 	public Tabuleiro() {
+//		try {
+//			cliente = new Socket("127.0.0.1", 5051);
+//			out = new DataOutputStream(cliente.getOutputStream());
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		setTabuleiro(new char[3][3]);
 
 		int i, j;
