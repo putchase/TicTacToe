@@ -4,21 +4,23 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
-
 import Jogo.*;
 
 public class Cliente extends JFrame {
+
+
+
 	Jogador jogador;
 	boolean isFirst = true;
 
@@ -31,11 +33,19 @@ public class Cliente extends JFrame {
 	JPanel pLinhas[];
 
 	public Cliente() {
+
 		iniciarJogador();
 		iniciarPainelGeral();
 		inciarPainelTabuleiro();
 		inicarPainel();
 		configurarJanela();
+		try {
+			cliente = new Socket("127.0.0.1", 5051);
+			saida = new DataOutputStream(cliente.getOutputStream());
+			new Thread(new Listen()).start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void iniciarJogador() {
@@ -65,8 +75,6 @@ public class Cliente extends JFrame {
 	private void inciarPainelTabuleiro() {
 		criarBotoes();
 		mostrarBotoes();
-		// pTabuleiro.setBorder(BorderFactory.createLineBorder(new Color(0, 0,
-		// 0)));
 	}
 
 	private void criarBotoes() {
@@ -90,9 +98,15 @@ public class Cliente extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(0, 0);
+				try {
+					saida.writeBytes("$0:0\n");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				tabuleiro[0][0].setText("" + jogador.getSimbolo());
 				if (jogador.isVencedor() == true) {
-					JOptionPane.showMessageDialog(null, "Você Venceu!");
+					JOptionPane.showMessageDialog(null, "VocÃª Venceu!");
 				}
 			}
 		});
@@ -102,9 +116,15 @@ public class Cliente extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(0, 1);
+				try {
+					saida.writeBytes("$0:1\n");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				tabuleiro[0][1].setText("" + jogador.getSimbolo());
 				if (jogador.isVencedor() == true) {
-					JOptionPane.showMessageDialog(null, "Você Venceu!");
+					JOptionPane.showMessageDialog(null, "VocÃª Venceu!");
 				}
 			}
 		});
@@ -114,9 +134,15 @@ public class Cliente extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(0, 2);
+				try {
+					saida.writeBytes("$0:2\n");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				tabuleiro[0][2].setText("" + jogador.getSimbolo());
 				if (jogador.isVencedor() == true) {
-					JOptionPane.showMessageDialog(null, "Você Venceu!");
+					JOptionPane.showMessageDialog(null, "VocÃª Venceu!");
 				}
 			}
 		});
@@ -126,9 +152,15 @@ public class Cliente extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(1, 0);
+				try {
+					saida.writeBytes("$1:0\n");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				tabuleiro[1][0].setText("" + jogador.getSimbolo());
 				if (jogador.isVencedor() == true) {
-					JOptionPane.showMessageDialog(null, "Você Venceu!");
+					JOptionPane.showMessageDialog(null, "VocÃª Venceu!");
 				}
 			}
 		});
@@ -138,9 +170,15 @@ public class Cliente extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(1, 1);
+				try {
+					saida.writeBytes("$1:1\n");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				tabuleiro[1][1].setText("" + jogador.getSimbolo());
 				if (jogador.isVencedor() == true) {
-					JOptionPane.showMessageDialog(null, "Você Venceu!");
+					JOptionPane.showMessageDialog(null, "VocÃª Venceu!");
 				}
 			}
 		});
@@ -150,48 +188,72 @@ public class Cliente extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(1, 2);
+				try {
+					saida.writeBytes("$1:2\n");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				tabuleiro[1][2].setText("" + jogador.getSimbolo());
 				if (jogador.isVencedor() == true) {
-					JOptionPane.showMessageDialog(null, "Você Venceu!");
+					JOptionPane.showMessageDialog(null, "VocÃª Venceu!");
 				}
 			}
 		});
-		
-tabuleiro[2][0].addActionListener(new ActionListener() {
-			
+
+		tabuleiro[2][0].addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(2, 0);
+				try {
+					saida.writeBytes("$2:0\n");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				tabuleiro[2][0].setText("" + jogador.getSimbolo());
 				if(jogador.isVencedor() == true){
-					 JOptionPane.showMessageDialog(null, "Você Venceu!");
+					JOptionPane.showMessageDialog(null, "VocÃª Venceu!");
 				}
 			}
 		});
 
-tabuleiro[2][1].addActionListener(new ActionListener() {
-	
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		jogador.fazerJogada(2, 1);
-		tabuleiro[2][1].setText("" + jogador.getSimbolo());
-		if(jogador.isVencedor() == true){
-			 JOptionPane.showMessageDialog(null, "Você Venceu!");
-		}
-	}
-});
+		tabuleiro[2][1].addActionListener(new ActionListener() {
 
-tabuleiro[2][2].addActionListener(new ActionListener() {
-	
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		jogador.fazerJogada(2, 2);
-		tabuleiro[2][2].setText("" + jogador.getSimbolo());
-		if(jogador.isVencedor() == true){
-			 JOptionPane.showMessageDialog(null, "Você Venceu!");
-		}
-	}
-});
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				jogador.fazerJogada(2, 1);
+				try {
+					saida.writeBytes("$2:1\n");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				tabuleiro[2][1].setText("" + jogador.getSimbolo());
+				if(jogador.isVencedor() == true){
+					JOptionPane.showMessageDialog(null, "VocÃª Venceu!");
+				}
+			}
+		});
+
+		tabuleiro[2][2].addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				jogador.fazerJogada(2, 2);
+				try {
+					saida.writeBytes("$2:2\n");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				tabuleiro[2][2].setText("" + jogador.getSimbolo());
+				if(jogador.isVencedor() == true){
+					JOptionPane.showMessageDialog(null, "VocÃª Venceu!");
+				}
+			}
+		});
 	}
 
 	private void inicarPainel() {
@@ -211,7 +273,31 @@ tabuleiro[2][2].addActionListener(new ActionListener() {
 		setVisible(true);
 
 	}
+	
+	private class Listen implements Runnable {
 
+		@Override
+		public void run() {
+			try {
+				BufferedReader br = new BufferedReader( new InputStreamReader(cliente.getInputStream()));
+				String msg;
+				while ((msg = br.readLine()) != null) {
+					if (msg.substring(0,1).equals("$")){
+						int x = Integer.parseInt( msg.substring(1,2));
+						int y = Integer.parseInt( msg.substring(3,4));
+						tabuleiro[x][y].setText("$");
+					}
+				}
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}
+	
 	public static void main(String[] args) {
 		new Cliente();
 	}
