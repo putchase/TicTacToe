@@ -95,7 +95,7 @@ public class Cliente extends JFrame {
 	private void mostrarBotoes() {
 		tabuleiro[0][0].addActionListener(new ActionListener() {
 
-			@Override
+			@Override 
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(0, 0);
 				try {
@@ -302,3 +302,4 @@ public class Cliente extends JFrame {
 		new Cliente();
 	}
 }
+
