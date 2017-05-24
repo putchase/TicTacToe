@@ -48,7 +48,7 @@ public class Tabuleiro {
 
 		// colunas
 		for (i = 0; i <= 2; i++) {
-			if (tabuleiro[0][i] == tabuleiro[1][i] && tabuleiro[1][i] == tabuleiro[2][i] && tabuleiro[i][0] != ' ') {
+			if (tabuleiro[0][i] == tabuleiro[1][i] && tabuleiro[1][i] == tabuleiro[2][i] && tabuleiro[0][i] != ' ') {
 				//System.out.println("venceu por coluna");
 				limparTabuleiro();
 				return true;

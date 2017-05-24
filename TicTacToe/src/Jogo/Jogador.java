@@ -44,11 +44,21 @@ public class Jogador {
 		return false;
 	}
 
+	
+	public  void fazerJogada(char simbolo, int linha, int coluna){
+		tabuleiro.jogada(simbolo, linha, coluna);
+		if(tabuleiro.checarVitoria() == true){
+			tabuleiro.limparTabuleiro();
+		}
+		vez = true;
+	}
 	public boolean isVencedor() {
 		return vencedor;
 	}
 	public boolean isFirst() {
+		
 		return isFirst;
+		
 	}
 	public char getSimbolo() {
 		return simbolo;
@@ -66,6 +76,7 @@ public class Jogador {
 		return vez;
 	}
 	public void setVez(boolean vez) {
+		//System.out.println("Minha vez!");
 		this.vez = vez;
 	}
 

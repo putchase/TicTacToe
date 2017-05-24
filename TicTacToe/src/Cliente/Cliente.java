@@ -19,25 +19,22 @@ import Jogo.*;
 
 public class Cliente extends JFrame {
 
-
-
 	Jogador jogador;
 	boolean isFirst = true;
 
 	Socket cliente;
 	DataOutputStream saida;
 	BufferedReader msgServidor;
-	
+
 	JButton tabuleiro[][];
 	JPanel painel = new JPanel();
 	JPanel pGeral = new JPanel();
 	JPanel pLinhas[];
-	
 
 	public Cliente() {
-		
+
 		iniciarJogador();
-		
+
 		try {
 			cliente = new Socket("127.0.0.1", 5051);
 			saida = new DataOutputStream(cliente.getOutputStream());
@@ -51,6 +48,7 @@ public class Cliente extends JFrame {
 		inicarPainel();
 		configurarJanela();
 	}
+
 	/*
 	 * Paineis GUI
 	 */
@@ -66,21 +64,22 @@ public class Cliente extends JFrame {
 		try {
 			boolean first;
 			first = msgServidor.ready();
-			
-		System.out.println(first);
 
-		
-		if (first == true) {
-			noJogador = noJogador + "1";
-			simbolo = simbolo + "O";
-			JOptionPane.showMessageDialog(null, "Primeiro Jogador!");
-			
-		} else {
-			noJogador = noJogador + "2";
-			simbolo = simbolo + "X";
-			jogador.setSimbolo('X');
-			JOptionPane.showMessageDialog(null, "Segundo Jogador!");
-		}
+			System.out.println(first);
+
+			if (first == true) {
+				noJogador = noJogador + "1";
+				simbolo = simbolo + "O";
+				JOptionPane.showMessageDialog(null, "Primeiro Jogador!");
+				jogador.setVez(true);
+
+			} else {
+				noJogador = noJogador + "2";
+				simbolo = simbolo + "X";
+				jogador.setSimbolo('X');
+				jogador.setVez(false);
+				JOptionPane.showMessageDialog(null, "Segundo Jogador!");
+			}
 		} catch (IOException e) {
 			System.out.println("AAAAAAAAA");
 			e.printStackTrace();
@@ -97,9 +96,7 @@ public class Cliente extends JFrame {
 		criarBotoes();
 		mostrarBotoes();
 	}
-	
-	
-	
+
 	private void criarBotoes() {
 		tabuleiro = new JButton[3][3];
 		pLinhas = new JPanel[3];
@@ -114,64 +111,56 @@ public class Cliente extends JFrame {
 		}
 
 	}
-	
+
 	private void limparTabuleiroGUI() {
-			
+
 		for (int i = 0; i <= 2; i++) {
 			for (int j = 0; j <= 2; j++) {
 				tabuleiro[i][j].setText("  ");
-				
+
 			}
 		}
 	}
-	
+
 	public void vitoria() {
 		if (jogador.isVencedor() == true) {
 			JOptionPane.showMessageDialog(null, "Você Venceu!");
 			limparTabuleiroGUI();
 		}
 	}
-	
-	
 
 	private void mostrarBotoes() {
 		tabuleiro[0][0].addActionListener(new ActionListener() {
 
-			@Override 
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(jogador.isVez() == true){
-					jogador.fazerJogada(0, 0);
-					try {
-						saida.writeBytes("$"+ jogador.getSimbolo() +":0:0\n");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					tabuleiro[0][0].setText("" + jogador.getSimbolo());
-					vitoria();
-				
-				}
-				
-			}
 
-			
+				jogador.fazerJogada(0, 0);
+				try {
+					saida.writeBytes("$" + jogador.getSimbolo() + ":0:0\n");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				tabuleiro[0][0].setText("" + jogador.getSimbolo());
+				vitoria();
+
+			}
 		});
 
 		tabuleiro[0][1].addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(jogador.isVez() == true){
-					
-					jogador.fazerJogada(0, 1);
-					try {
-						saida.writeBytes("$"+ jogador.getSimbolo() +":0:1\n");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					tabuleiro[0][1].setText("" + jogador.getSimbolo());
-					vitoria();
-					
+
+				jogador.fazerJogada(0, 1);
+				try {
+					saida.writeBytes("$" + jogador.getSimbolo() + ":0:1\n");
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
+				tabuleiro[0][1].setText("" + jogador.getSimbolo());
+				vitoria();
+
 			}
 		});
 
@@ -179,18 +168,16 @@ public class Cliente extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(jogador.isVez() == true){
-					
-					jogador.fazerJogada(0, 2);
-					try {
-						saida.writeBytes("$"+ jogador.getSimbolo() +":0:2\n");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					tabuleiro[0][2].setText("" + jogador.getSimbolo());
-					vitoria();
-					
+
+				jogador.fazerJogada(0, 2);
+				try {
+					saida.writeBytes("$" + jogador.getSimbolo() + ":0:2\n");
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
+				tabuleiro[0][2].setText("" + jogador.getSimbolo());
+				vitoria();
+
 			}
 		});
 
@@ -198,18 +185,16 @@ public class Cliente extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(jogador.isVez() == true){
-					
-					jogador.fazerJogada(1, 0);
-					try {
-						saida.writeBytes("$"+ jogador.getSimbolo() +":1:0\n");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					tabuleiro[1][0].setText("" + jogador.getSimbolo());
-					vitoria();
-					
+
+				jogador.fazerJogada(1, 0);
+				try {
+					saida.writeBytes("$" + jogador.getSimbolo() + ":1:0\n");
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
+				tabuleiro[1][0].setText("" + jogador.getSimbolo());
+				vitoria();
+
 			}
 		});
 
@@ -217,18 +202,16 @@ public class Cliente extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(jogador.isVez() == true){
-					
-					jogador.fazerJogada(1, 1);
-					try {
-						saida.writeBytes("$"+ jogador.getSimbolo() +":1:1\n");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					tabuleiro[1][1].setText("" + jogador.getSimbolo());
-					vitoria();
-					
+
+				jogador.fazerJogada(1, 1);
+				try {
+					saida.writeBytes("$" + jogador.getSimbolo() + ":1:1\n");
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
+				tabuleiro[1][1].setText("" + jogador.getSimbolo());
+				vitoria();
+
 			}
 		});
 
@@ -236,18 +219,15 @@ public class Cliente extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(jogador.isVez() == true){
-					
-					jogador.fazerJogada(1, 2);
-					try {
-						saida.writeBytes("$"+ jogador.getSimbolo() +":1:2\n");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					tabuleiro[1][2].setText("" + jogador.getSimbolo());
-					vitoria();
-					
+
+				jogador.fazerJogada(1, 2);
+				try {
+					saida.writeBytes("$" + jogador.getSimbolo() + ":1:2\n");
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
+				tabuleiro[1][2].setText("" + jogador.getSimbolo());
+				vitoria();
 			}
 		});
 
@@ -255,18 +235,16 @@ public class Cliente extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(jogador.isVez() == true){
-					
-					jogador.fazerJogada(2, 0);
-					try {
-						saida.writeBytes("$"+ jogador.getSimbolo() +":2:0\n");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					tabuleiro[2][0].setText("" + jogador.getSimbolo());
-					vitoria();
-					
+
+				jogador.fazerJogada(2, 0);
+				try {
+					saida.writeBytes("$" + jogador.getSimbolo() + ":2:0\n");
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
+				tabuleiro[2][0].setText("" + jogador.getSimbolo());
+				vitoria();
+
 			}
 		});
 
@@ -274,18 +252,16 @@ public class Cliente extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(jogador.isVez() == true){
-					jogador.fazerJogada(2, 1);
-					try {
-						saida.writeBytes("$" + jogador.getSimbolo() + ":2:1\n");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					tabuleiro[2][1].setText("" + jogador.getSimbolo());
-					vitoria();
-					
+
+				jogador.fazerJogada(2, 1);
+				try {
+					saida.writeBytes("$" + jogador.getSimbolo() + ":2:1\n");
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				
+				tabuleiro[2][1].setText("" + jogador.getSimbolo());
+				vitoria();
+
 			}
 		});
 
@@ -293,19 +269,17 @@ public class Cliente extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(jogador.isVez() == true){
-					
-					jogador.fazerJogada(2, 2);
-					try {
-						saida.writeBytes("$"+ jogador.getSimbolo() +":2:2\n");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					tabuleiro[2][2].setText("" + jogador.getSimbolo());
-					vitoria();
+
+				jogador.fazerJogada(2, 2);
+				try {
+					saida.writeBytes("$" + jogador.getSimbolo() + ":2:2\n");
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				
+				tabuleiro[2][2].setText("" + jogador.getSimbolo());
+				vitoria();
 			}
+
 		});
 	}
 
@@ -326,35 +300,34 @@ public class Cliente extends JFrame {
 		setVisible(true);
 
 	}
-	
+
 	private class Listen implements Runnable {
 
 		@Override
 		public void run() {
 			try {
-				BufferedReader br = new BufferedReader( new InputStreamReader(cliente.getInputStream()));
+				BufferedReader br = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
 				String msg;
 				while ((msg = br.readLine()) != null) {
-					if (msg.substring(0,1).equals("$")){
+					if (msg.substring(0, 1).equals("$")) {
 						char simb = msg.charAt(1);
-						int x = Integer.parseInt( msg.substring(3,4));
-						int y = Integer.parseInt( msg.substring(5,6));
+						int x = Integer.parseInt(msg.substring(3, 4));
+						int y = Integer.parseInt(msg.substring(5, 6));
 						tabuleiro[x][y].setText("" + simb);
-						jogador.setVez(true);
+						jogador.fazerJogada(simb, x, y);
 					}
 				}
-				
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	public static void main(String[] args) throws IOException {
 		new Cliente();
 	}
 }
-
