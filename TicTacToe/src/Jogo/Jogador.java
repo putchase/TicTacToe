@@ -8,7 +8,7 @@ public class Jogador {
 	private int vitorias = 0;
 	
 	protected boolean vencedor = false;
-	protected boolean vez;
+	private boolean vez;
 	protected boolean isFirst;
 	
 	public Jogador(boolean isFirst){
@@ -16,7 +16,7 @@ public class Jogador {
 		this.isFirst = isFirst;
 		if(isFirst == true){
 			setSimbolo('O');
-			vez = true;
+			setVez(true);
 			
 		}else{
 			setSimbolo('X');
@@ -27,7 +27,7 @@ public class Jogador {
 		this.isFirst = isFirst;
 		if(isFirst == true){
 			setSimbolo('O');
-			vez = true;
+			setVez(true);
 		}else{
 			setSimbolo('X');
 		}
@@ -35,7 +35,7 @@ public class Jogador {
 	// faz a jogada e checa se o jogador foi vencedor
 	public  boolean fazerJogada(int linha, int coluna){
 		tabuleiro.jogada(this.getSimbolo(), linha, coluna);
-		
+		vez = false;
 		if(tabuleiro.checarVitoria() == true){
 			vencedor = true;
 			setVitorias(getVitorias() + 1);
@@ -61,6 +61,12 @@ public class Jogador {
 	}
 	public void setVitorias(int vitorias) {
 		this.vitorias = vitorias;
+	}
+	public boolean isVez() {
+		return vez;
+	}
+	public void setVez(boolean vez) {
+		this.vez = vez;
 	}
 
 
