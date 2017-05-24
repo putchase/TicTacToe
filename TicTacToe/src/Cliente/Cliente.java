@@ -26,7 +26,8 @@ public class Cliente extends JFrame {
 
 	Socket cliente;
 	DataOutputStream saida;
-
+	BufferedReader msgServidor;
+	
 	JButton tabuleiro[][];
 	JPanel painel = new JPanel();
 	JPanel pGeral = new JPanel();
@@ -34,19 +35,21 @@ public class Cliente extends JFrame {
 	
 
 	public Cliente() {
-
+		
+		
+		try {
+			cliente = new Socket("127.0.0.1", 5051);
+			saida = new DataOutputStream(cliente.getOutputStream());
+			msgServidor = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
+			new Thread(new Listen()).start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		iniciarJogador();
 		iniciarPainelGeral();
 		inciarPainelTabuleiro();
 		inicarPainel();
 		configurarJanela();
-		try {
-			cliente = new Socket("127.0.0.1", 5051);
-			saida = new DataOutputStream(cliente.getOutputStream());
-			new Thread(new Listen()).start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	/*
 	 * Paineis GUI
@@ -59,17 +62,32 @@ public class Cliente extends JFrame {
 	private void iniciarPainelGeral() {
 		String noJogador = "Jogador ";
 		String simbolo = "Simbolo: ";
-		if (jogador.isFirst() == true) {
+
+		try {
+			boolean first;
+			first = msgServidor.ready();
+			
+		System.out.println(first);
+
+		
+		if (first == true) {
 			noJogador = noJogador + "1";
 			simbolo = simbolo + "O";
+			JOptionPane.showMessageDialog(null, "Primeiro Jogador!");
+			
 		} else {
 			noJogador = noJogador + "2";
 			simbolo = simbolo + "X";
+			jogador.setSimbolo('X');
+			JOptionPane.showMessageDialog(null, "Segundo Jogador!");
 		}
-
+		} catch (IOException e) {
+			System.out.println("AAAAAAAAA");
+			e.printStackTrace();
+		}
 		JLabel geral = new JLabel();
 		geral.setFont(new Font(null, 1, 26));
-		geral.setText("<html>" + noJogador + "<br/>" + simbolo + "<br/> Vitórias: " + jogador.getVitorias() + "<br/></html>");
+		geral.setText("<html>" + noJogador + "<br/>" + simbolo + "<br/></html>");
 		pGeral = new JPanel();
 		pGeral.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
 		pGeral.add(geral);
@@ -123,7 +141,7 @@ public class Cliente extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(0, 0);
 				try {
-					saida.writeBytes("$0:0\n");
+					saida.writeBytes("$"+ jogador.getSimbolo() +":0:0\n");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -141,7 +159,7 @@ public class Cliente extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(0, 1);
 				try {
-					saida.writeBytes("$0:1\n");
+					saida.writeBytes("$"+ jogador.getSimbolo() +":0:1\n");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -156,7 +174,7 @@ public class Cliente extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(0, 2);
 				try {
-					saida.writeBytes("$0:2\n");
+					saida.writeBytes("$"+ jogador.getSimbolo() +":0:2\n");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -171,7 +189,7 @@ public class Cliente extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(1, 0);
 				try {
-					saida.writeBytes("$1:0\n");
+					saida.writeBytes("$"+ jogador.getSimbolo() +":1:0\n");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -186,7 +204,7 @@ public class Cliente extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(1, 1);
 				try {
-					saida.writeBytes("$1:1\n");
+					saida.writeBytes("$"+ jogador.getSimbolo() +":1:1\n");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -201,7 +219,7 @@ public class Cliente extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(1, 2);
 				try {
-					saida.writeBytes("$1:2\n");
+					saida.writeBytes("$"+ jogador.getSimbolo() +":1:2\n");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -216,7 +234,7 @@ public class Cliente extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(2, 0);
 				try {
-					saida.writeBytes("$2:0\n");
+					saida.writeBytes("$"+ jogador.getSimbolo() +":2:0\n");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -231,7 +249,7 @@ public class Cliente extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(2, 1);
 				try {
-					saida.writeBytes("$2:1\n");
+					saida.writeBytes("$"+ jogador.getSimbolo() +":2:1\n");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -246,7 +264,7 @@ public class Cliente extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				jogador.fazerJogada(2, 2);
 				try {
-					saida.writeBytes("$2:2\n");
+					saida.writeBytes("$"+ jogador.getSimbolo() +":2:2\n");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -283,9 +301,10 @@ public class Cliente extends JFrame {
 				String msg;
 				while ((msg = br.readLine()) != null) {
 					if (msg.substring(0,1).equals("$")){
-						int x = Integer.parseInt( msg.substring(1,2));
-						int y = Integer.parseInt( msg.substring(3,4));
-						tabuleiro[x][y].setText("$");
+						char simb = msg.charAt(1);
+						int x = Integer.parseInt( msg.substring(3,4));
+						int y = Integer.parseInt( msg.substring(5,6));
+						tabuleiro[x][y].setText("" + simb);
 					}
 				}
 				
@@ -298,7 +317,7 @@ public class Cliente extends JFrame {
 		
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		new Cliente();
 	}
 }

@@ -11,16 +11,18 @@ public class Servidor{
 		boolean seguir = true;
 		HashMap<Socket, Socket> clientes = new HashMap<>();
 		int qt = 0;
-		ServerSocket ss;
+		ServerSocket servidor;
 
 		try{
 
-			ss = new ServerSocket(5051);
+			servidor = new ServerSocket(5051);
 			
-			
-			
-			Socket s1 = ss.accept();
-			Socket s2 = ss.accept();
+			//mensagem inicial apenas pro primeiro cliente a se conectar
+			Socket s1 = servidor.accept();
+			DataOutputStream first = new DataOutputStream(s1.getOutputStream());
+			first.writeBoolean(true);
+	
+			Socket s2 = servidor.accept();
 			clientes.put(s1, s2);
 			clientes.put(s2, s1);
 			new Thread(new Listen(s1,clientes)).start();
@@ -49,21 +51,21 @@ public class Servidor{
 
 		@Override
 		public void run() {
-			BufferedReader br = null;
-			InputStream is = null;
+			BufferedReader reader = null;
+			InputStream inCliente = null;
 			String msg;
 			try {
-				is = cliente.getInputStream();
+				inCliente = cliente.getInputStream();
 
-				br = new BufferedReader(new InputStreamReader(is));
+				reader = new BufferedReader(new InputStreamReader(inCliente));
 				Socket dst = skts.get(cliente);
 				
-				DataOutputStream out = new DataOutputStream(dst.getOutputStream());
+				DataOutputStream outCliente = new DataOutputStream(dst.getOutputStream());
 				while (true) {
-					msg = br.readLine();
+					msg = reader.readLine();
 					
 					System.out.println(msg);
-					out.writeBytes(msg+"\n");
+					outCliente.writeBytes(msg+"\n");
 
 				}
 				
